@@ -1,0 +1,89 @@
+import random
+def get_word():
+    return random.choice(['laptop','shark','orange','pencil','goldfish','monkey','apple','keyboard','donkey','papaya'])
+def display_hangman(lives):
+    hangman_pics = ['''
+   +----+
+   |    |
+        |
+        |
+        |
+        |
+===============''','''
+    +----+
+    |    |
+    O    |
+         |
+         |
+         |
+===============''','''
+    +----+
+    |    |
+    O    |
+    |    |
+         |
+         | 
+===============''','''
+    +----+
+    |    |
+    O    |
+   /|    |
+         |
+         |
+===============''','''
+    +----+
+    |    |
+    O    |
+   /|\\   | 
+         |
+         | 
+===============''','''
+    +----+
+    |    |
+    O    |
+   /|\\   | 
+   /     | 
+         | 
+===============''','''
+    +----+
+    |    |
+    O    |
+   /|\\   | 
+   / \\   |
+         | 
+===============''']                                                  
+    return hangman_pics[6 - lives]
+def hangman():
+    word = get_word()
+    display = ['_'] * len(word)
+    lives = 6
+    used_letters = set()
+    print("WELCOME TO HANGMAN!")
+    while lives > 0 and "_"in display:
+        print("\n WORD:", " ".join(display))
+        print("LIVES LEFT:", lives)
+        print(display_hangman(lives))
+        print("USED LETTERS:", " ".join(sorted(used_letters)))
+        guess = input("GUESS A LETTER: ").lower()
+        if len(guess) !=1 or not guess.isalpha():
+            print("--> PLEASE ENTER A SINGLE ALPHABETIC CHARACTER.")
+            continue
+        if guess in used_letters:
+            print(f"--> YOU HAVE ALREADY GUESSED '{guess}'.")
+            continue
+        used_letters.add(guess)
+        if guess in word:
+            for i,c in enumerate(word):
+                if c == guess: 
+                    display[i] = c
+            print("EXCELLENT GUESS!")
+        else:
+           lives -= 1
+           print(f"'{guess}' IS NOT IN THE WORD.")
+    if "_" not in display:
+         print("\n YOU WON! THE WORD WAS:", word)
+    else:
+         print(display_hangman(lives))
+         print("\n GAME OVER!!!THE WORD WAS:", word)
+if __name__ == "__main__":
+    hangman()
